@@ -3,7 +3,6 @@ const { logTaskEvent } = require('../utils/logUtils');
 const crypto = require('crypto');
 const got = require('got');
 const ProxyUtil = require('../utils/ProxyUtil');
-
 class Cloud189Service {
     static instances = new Map();
 
@@ -288,6 +287,19 @@ class Cloud189Service {
             }
         })
         return res.headers.location
+    }
+    // 记录转存量
+    async increaseShareFileAccessCount(shareId) {
+        const response = await this.request('https://cloud.189.cn/api/portal//share/increaseShareFileAccessCount.action', {
+            method: 'GET',
+            searchParams: {
+                shareId,
+                view: false,
+                download: false,
+                dump: true
+            },
+        })
+        return response
     }
     async login(username, password, validateCode) {
         try {
